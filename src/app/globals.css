@@ -72,7 +72,8 @@
     --sidebar-accent-foreground: #ffffff;
     --sidebar-border: #222222;
     --sidebar-ring: #773ac1;
-    --custom-purple: #773ac1;
+    --c-purple: #773ac1;
+    --c-violet: #bf91f7;
   }
 
 @theme inline {
