@@ -28,7 +28,7 @@ export const SingUpComponent = () => {
             confirmPassword: "",
         },
     });
-
+// prueba
     async function onSubmit(values: RegisterFormData) {
         const res = await fetch('/api/user/register', {
             method: 'POST',
