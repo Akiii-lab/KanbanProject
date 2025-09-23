@@ -17,8 +17,14 @@ import { Card, CardHeader } from "../ui/card";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Label } from "../ui/label";
+import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/navigation";
 
 export const LoginComponent = () => {
+
+    const router = useRouter();
+    const { setUser } = useUserStore();
+
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -28,8 +34,7 @@ export const LoginComponent = () => {
     });
 
     const onSubmit = async (values: LoginFormData) => {
-        //TODO: Cambiar a /api/user/login
-        const res = await fetch('/api/user/register', {
+        const res = await fetch('/api/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +49,10 @@ export const LoginComponent = () => {
         if (!data.ok) {
             toast.error('Error al iniciar sesión');
         } else {
+            console.log(data.data);
+            setUser(data.data)
             toast.success('Inicio de sesión exitoso');
+            router.push('/'); // Redirige a la página principal después del login
         }
     }
 
