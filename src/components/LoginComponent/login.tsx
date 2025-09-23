@@ -14,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "@/schemas";
 import { Card, CardHeader } from "../ui/card";
+import { toast } from "sonner";
+import Link from "next/link";
+import { Label } from "../ui/label";
 
 export const LoginComponent = () => {
     const form = useForm<LoginFormData>({
@@ -24,8 +27,25 @@ export const LoginComponent = () => {
         },
     });
 
-    function onSubmit(values: LoginFormData) {
-        
+    const onSubmit = async (values: LoginFormData) => {
+        //TODO: Cambiar a /api/user/login
+        const res = await fetch('/api/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password,
+            }),
+        });
+
+        const data = await res.json();
+        if (!data.ok) {
+            toast.error('Error al iniciar sesión');
+        } else {
+            toast.success('Inicio de sesión exitoso');
+        }
     }
 
     return (
@@ -97,8 +117,14 @@ export const LoginComponent = () => {
                                 e.currentTarget.style.color = '#fff';
                             }}
                         >
-                            Submit
+                            Sign In
                         </Button>
+                        <div className="text-center flex flex-row gap-1">
+                            <Label>Don't have an account? </Label>
+                            <Link href="/register" className="text-sm font-bold text-blue-500 hover:underline">
+                                Register
+                            </Link>
+                        </div>
                     </form>
                 </Form>
             </div>
