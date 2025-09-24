@@ -1,4 +1,3 @@
-
 import "./loader.css";
 
 interface LoaderProps {

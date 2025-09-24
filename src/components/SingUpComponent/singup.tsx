@@ -18,8 +18,12 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Label } from "../ui/label";
 import { LogoIcon } from "../logo";
+import { useState } from "react";
+import { Loader } from "../Loader/loader";
 
 export const SingUpComponent = () => {
+    const [loading, setLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState<string | null>(null);
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -30,6 +34,8 @@ export const SingUpComponent = () => {
     });
     // prueba
     async function onSubmit(values: RegisterFormData) {
+        setLoading(true);
+        setLoadingText('Signing up...');
         const res = await fetch('/api/user/register', {
             method: 'POST',
             headers: {
@@ -48,8 +54,17 @@ export const SingUpComponent = () => {
         } else {
             toast.success('Registro de usuario exitoso');
         }
+        setLoading(false);
     }
 
+    if(loading){
+        return (
+            <div className="flex items-center justify-center h-screen">
+                {loadingText ? <Loader text={loadingText} /> : <Loader />}
+            </div>
+        )
+    }
+    
     return (
         <Card
             className="w-md p-6 shadow-lg"

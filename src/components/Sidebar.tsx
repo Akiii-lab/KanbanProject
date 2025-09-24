@@ -31,8 +31,8 @@ export const Sidebar = () => {
     const isActive = (href: string) => pathname.startsWith(href);
 
     return (
-        <div className={`flex h-screen ${sidebarCollapsed ? 'w-20' : 'w-max'} p-4 transition-all duration-300`}>
-            <Card className={`p-6 bg-[color:var(--custom-dark)] text-white h-full ${sidebarCollapsed ? 'w-16' : 'w-max'} transition-all duration-300`}>
+        <div className={`flex h-screen ${isClient && sidebarCollapsed ? 'w-20' : 'w-max'} p-4 transition-all duration-300`}>
+            <Card className={`p-6 bg-[color:var(--custom-dark)] text-white h-full ${isClient && sidebarCollapsed ? 'w-16' : 'w-max'} transition-all duration-300`}>
                 <aside className="w-full h-full">
                     <nav className="flex flex-col gap-4 h-full">
                         <div className="flex flex-col justify-between items-center h-full">
