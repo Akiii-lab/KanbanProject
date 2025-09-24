@@ -2,5 +2,10 @@ export interface User {
     id: number;
     email: string;
     username: string;
-    firstLogin: boolean;
+    first_login: boolean;
+}
+
+export interface LoggedUser {
+    username: string;
+    email: string;
 }

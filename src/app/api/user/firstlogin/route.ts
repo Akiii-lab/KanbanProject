@@ -5,30 +5,26 @@ import { User } from "@/types/user";
 
 export async function POST(req: NextRequest) {
   try {
-    // 1️⃣ Tomar la cookie de sesión
     const cookie = req.cookies.get("user")?.value;
     if (!cookie) {
       return NextResponse.json(
-        { error: "Usuario no autenticado", ok: false },
+        { error: "User not authenticated", ok: false },
         { status: 401 }
       );
     }
 
     const sessionUser: User = JSON.parse(cookie);
 
-    // 2️⃣ Leer el nuevo username del body
     const { username } = await req.json();
     if (!username || !username.trim()) {
       return NextResponse.json(
-        { error: "Nombre de usuario requerido", ok: false },
+        { error: "Username is required", ok: false },
         { status: 400 }
       );
     }
 
-    // 3️⃣ Conectar a la base de datos
     const db = await GetDB();
 
-    // 4️⃣ Actualizar el username y marcar first_login como false
     await db.request()
       .input("id", sessionUser.id)
       .input("username", username)
@@ -38,11 +34,10 @@ export async function POST(req: NextRequest) {
         WHERE id = @id
       `);
 
-    // 5️⃣ Actualizar cookie con el nuevo username y firstLogin = false
-    const updatedUser = { ...sessionUser, username, firstLogin: false };
+    const updatedUser = { ...sessionUser, username, first_login: false };
 
     const response = NextResponse.json(
-      { message: "Nombre actualizado correctamente", ok: true, data: updatedUser },
+      { message: "Username updated successfully", ok: true, data: updatedUser },
       { status: 200 }
     );
 
@@ -50,13 +45,14 @@ export async function POST(req: NextRequest) {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
     return response;
 
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Error al actualizar usuario", details: error?.message || error, ok: false },
+      { error: "Error updating user", details: error?.message || error, ok: false },
       { status: 500 }
     );
   }

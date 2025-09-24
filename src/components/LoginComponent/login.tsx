@@ -52,13 +52,7 @@ export const LoginComponent = () => {
             console.log(data.data);
             setUser(data.data);
             toast.success('Inicio de sesión exitoso');
-
-            // 👇 Usa el redirect que manda el backend
-            if (data.redirect) {
-                router.push(data.redirect);
-            } else {
-                router.push('/'); // fallback
-            }
+            router.push('/');
         }
 
     }

@@ -4,7 +4,7 @@ import OnboardingComponent from "@/components/onboardComponent/onboard";
 
 export default function OnboardingPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center p-5">
       <OnboardingComponent />
     </div>
   );

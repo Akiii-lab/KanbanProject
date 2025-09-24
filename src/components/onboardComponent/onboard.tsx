@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Card, CardHeader } from "../ui/card";
+import { Form } from "../ui/form";
+import { useUserStore } from "@/store/userStore";
+import { toast } from "sonner";
 
 export default function OnboardingComponent() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const router = useRouter();
+  const { setUser } = useUserStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     try {
-      // <-- Aquí va fetch
       const res = await fetch("/api/user/firstlogin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,41 +29,44 @@ export default function OnboardingComponent() {
       const data = await res.json();
 
       if (res.ok) {
-        router.push("/dashboard"); // redirige si todo salió bien
+        setUser(data.data); 
+        toast.success("User saved successfully.");
+        window.location.href = "/";
       } else {
-        setMessage(data?.error || "Error al guardar."); // mostrar error
+        toast.error(data?.error || "Error saving user"); 
       }
     } catch (err) {
       console.error(err);
-      setMessage("Error de conexión.");
+      toast.error("Connection error.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-background">
-      <h1 className="text-3xl font-bold mb-4 text-white">¡Bienvenido!</h1>
-      <p className="mb-4 text-muted-foreground">
-        ¿Cómo quieres que te llamemos?
-      </p>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full max-w-xs">
-        <input
+    <Card className="flex flex-col items-center justify-center p-5 w-full max-w-sm mx-auto bg-black border border-[color:var(--c-purple)]">
+      <CardHeader className="text-center text-xl font-bold w-full">
+        Welcome to Onboarding!
+      </CardHeader>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+        <p className="mb-2 text-muted-foreground text-center">
+          How would you like us to call you?
+        </p>
+        <Input
           type="text"
-          placeholder="Tu nombre de usuario"
+          placeholder="Your username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
         />
-        <button
+        <Button
           type="submit"
           disabled={loading || !username.trim()}
-          className="bg-primary hover:bg-primary/80 text-white py-2 px-4 rounded-lg transition disabled:opacity-50"
+          className="w-full"
         >
-          {loading ? "Guardando..." : "Guardar"}
-        </button>
+          {loading ? "Saving..." : "Save"}
+        </Button>
       </form>
-      {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
-    </div>
+    </Card>
   );
 }
