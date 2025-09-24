@@ -3,6 +3,7 @@ export interface User {
     email: string;
     username: string;
     first_login: boolean;
+
 }
 
 export interface LoggedUser {

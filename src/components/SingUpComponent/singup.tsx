@@ -1,5 +1,7 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -10,34 +12,25 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { loginSchema, type LoginFormData } from "@/schemas";
-import { useUserStore } from "@/store/userStore";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { RegisterFormData, registerSchema } from "@/schemas";
 import { Card, CardHeader } from "../ui/card";
+import { toast } from "sonner";
+import Link from "next/link";
 import { Label } from "../ui/label";
 import { LogoIcon } from "../logo";
 
-
-export const LoginComponent = () => {
-
-    const router = useRouter();
-    const { setUser } = useUserStore();
-
-    const form = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema),
+export const SingUpComponent = () => {
+    const form = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
             password: "",
+            confirmPassword: "",
         },
     });
-
-    const onSubmit = async (values: LoginFormData) => {
-        const res = await fetch('/api/user/login', {
+    // prueba
+    async function onSubmit(values: RegisterFormData) {
+        const res = await fetch('/api/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,19 +38,16 @@ export const LoginComponent = () => {
             body: JSON.stringify({
                 email: values.email,
                 password: values.password,
+                confirmPassword: values.confirmPassword
             }),
         });
 
         const data = await res.json();
         if (!data.ok) {
-            toast.error('Error al iniciar sesión');
+            toast.error(data.error || 'Error al registrar el usuario');
         } else {
-            console.log(data.data);
-            setUser(data.data);
-            toast.success('Inicio de sesión exitoso');
-            router.push('/');
+            toast.success('Registro de usuario exitoso');
         }
-
     }
 
     return (
@@ -71,8 +61,8 @@ export const LoginComponent = () => {
             }}
         >
             <CardHeader className="text-center font-bold">
-                <LogoIcon/>
-                LOGIN
+                <LogoIcon />
+                REGISTER
             </CardHeader>
             <div className="form">
                 <Form {...form}>
@@ -115,6 +105,26 @@ export const LoginComponent = () => {
                                 )}
                             />
                         </div>
+                        <div className="container-1">
+                            <FormField
+                                control={form.control}
+                                name="confirmPassword"
+                                render={({ field }) => (
+                                    <FormItem className="group">
+                                        <FormLabel style={{ fontFamily: 'var(--font-montserrat), Montserrat, sans-serif' }}>Confirm password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                className="main-input"
+                                                placeholder="Confirm your password"
+                                                type="password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <Button type="submit" className="submit w-full hover:cursor-pointer"
                             style={{
                                 fontFamily: 'var(--font-montserrat), Montserrat, sans-serif',
@@ -132,12 +142,12 @@ export const LoginComponent = () => {
                                 e.currentTarget.style.color = '#fff';
                             }}
                         >
-                            Sign In
+                            Sing Up
                         </Button>
                         <div className="text-center flex flex-row gap-1">
-                            <Label>Don't have an account? </Label>
-                            <Link href="/register" className="text-sm font-bold [color:var(--c-violet)] hover:underline">
-                                Register
+                            <Label>Do have an account? </Label>
+                            <Link href="/login" className="text-sm font-bold [color:var(--c-violet)] hover:underline">
+                                Login
                             </Link>
                         </div>
                     </form>
