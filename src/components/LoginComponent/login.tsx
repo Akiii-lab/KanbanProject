@@ -1,7 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -13,13 +11,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "@/schemas";
-import { Card, CardHeader } from "../ui/card";
-import { toast } from "sonner";
-import Link from "next/link";
-import { Label } from "../ui/label";
 import { useUserStore } from "@/store/userStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Card, CardHeader } from "../ui/card";
+import { Label } from "../ui/label";
 import { LogoIcon } from "../logo";
+
 
 export const LoginComponent = () => {
 
@@ -51,10 +53,11 @@ export const LoginComponent = () => {
             toast.error('Error al iniciar sesión');
         } else {
             console.log(data.data);
-            setUser(data.data)
+            setUser(data.data);
             toast.success('Inicio de sesión exitoso');
-            router.push('/'); // Redirige a la página principal después del login
+            router.push('/');
         }
+
     }
 
     return (
