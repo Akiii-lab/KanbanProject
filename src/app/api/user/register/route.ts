@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GetDB } from '@/utils/db';
 
 export async function POST(req: NextRequest) {
-    const { username, email, password, confirmPassword  } = await req.json();
+    const { email, password, confirmPassword  } = await req.json();
     const create_time = new Date(Date.now()); // Crear un objeto Date en lugar de timestamp
     try {
-        if (!username || !email || !password || !confirmPassword) {
+        if ( !email || !password || !confirmPassword) {
             return NextResponse.json({ error: 'Username, email y password son requeridos' }, { status: 400 });
         }
 
@@ -15,16 +15,20 @@ export async function POST(req: NextRequest) {
 
         const db = await GetDB();
 
+        const result = await db.request().query(`SELECT * FROM KanbanProject.Users WHERE email = '${email}'`);
+
+        if (result.recordset.length > 0) {
+            return NextResponse.json({ error: 'El email ya está registrado' }, { status: 400 });
+        }
+
         await db.request()
-            .input('username', username)
             .input('email', email)
             .input('password', password)
             .input('create_time', create_time)
-            .query(`INSERT INTO KanbanProject.Users (username, email, password, create_time) VALUES (@username, @email, @password, @create_time);`);
+            .query(`INSERT INTO KanbanProject.Users (email, password, create_time) VALUES (@email, @password, @create_time);`);
 
         return NextResponse.json({ message: 'Usuario registrado exitosamente', ok: true }, { status: 201 });
     } catch (error: any) {
-        // Mostrar el mensaje real del error para depuración
         return NextResponse.json({ error: 'Error al registrar el usuario', details: error?.message || error, ok: false }, { status: 500 });
     }
 }

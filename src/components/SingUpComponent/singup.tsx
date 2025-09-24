@@ -22,7 +22,6 @@ export const SingUpComponent = () => {
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            username: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -36,7 +35,6 @@ export const SingUpComponent = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: values.username,
                 email: values.email,
                 password: values.password,
                 confirmPassword: values.confirmPassword
@@ -45,7 +43,7 @@ export const SingUpComponent = () => {
 
         const data = await res.json();
         if (!data.ok) {
-            toast.error('Error al registrar el usuario');
+            toast.error(data.error || 'Error al registrar el usuario');
         } else {
             toast.success('Registro de usuario exitoso');
         }
@@ -65,24 +63,6 @@ export const SingUpComponent = () => {
             <div className="form">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem className="group">
-                                    <FormLabel style={{ fontFamily: 'var(--font-montserrat), Montserrat, sans-serif' }}>Username</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="main-input"
-                                            placeholder="Enter your username"
-                                            type="text"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         <FormField
                             control={form.control}
                             name="email"
