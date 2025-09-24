@@ -15,16 +15,18 @@ import { useUserStore } from "@/store/userStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Card, CardHeader } from "../ui/card";
 import { Label } from "../ui/label";
 import { LogoIcon } from "../logo";
+import { useState } from "react";
+import { Loader } from "../Loader/loader";
 
 
 export const LoginComponent = () => {
-
+    const [loading, setLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState<string | null>(null);
     const router = useRouter();
     const { setUser } = useUserStore();
 
@@ -37,27 +39,42 @@ export const LoginComponent = () => {
     });
 
     const onSubmit = async (values: LoginFormData) => {
-        const res = await fetch('/api/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: values.email,
-                password: values.password,
-            }),
-        });
-
-        const data = await res.json();
-        if (!data.ok) {
+        try {
+            setLoading(true);
+            setLoadingText("Sign in...");
+            const res = await fetch('/api/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                }),
+            });
+            const data = await res.json();
+            if (!data.ok) {
+                toast.error('Error al iniciar sesión');
+            } else {
+                console.log(data.data);
+                setUser(data.data);
+                toast.success('Inicio de sesión exitoso');
+                router.push('/');
+            }
+        } catch (error) {
+            console.error(error);
             toast.error('Error al iniciar sesión');
-        } else {
-            console.log(data.data);
-            setUser(data.data);
-            toast.success('Inicio de sesión exitoso');
-            router.push('/');
+        } finally {
+            setLoading(false);
         }
+    }
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                {loadingText ? <Loader text={loadingText} /> : <Loader />}
+            </div>
+        );
     }
 
     return (
@@ -71,7 +88,7 @@ export const LoginComponent = () => {
             }}
         >
             <CardHeader className="text-center font-bold">
-                <LogoIcon/>
+                <LogoIcon />
                 LOGIN
             </CardHeader>
             <div className="form">
