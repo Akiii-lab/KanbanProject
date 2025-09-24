@@ -1,11 +1,14 @@
-import { NextRequest } from "next/server";
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-    const cookieStore = cookies();
+export async function POST() {
     try {
-        return new Response(JSON.stringify({ message: 'Sesión cerrada correctamente' }), { status: 200 });
+        const response = new NextResponse(JSON.stringify({ message: 'Sesión cerrada correctamente', ok: true }), { status: 200 });
+        response.cookies.set('user', '', {
+            path: '/',
+            expires: new Date(0),
+        });
+        return response;
     } catch (error) {
-        return new Response(JSON.stringify({ error: 'Error al cerrar sesión', details: error }), { status: 500 });
+        return new NextResponse(JSON.stringify({ error: 'Error al cerrar sesión', details: error, ok: false }), { status: 500 });
     }
 }

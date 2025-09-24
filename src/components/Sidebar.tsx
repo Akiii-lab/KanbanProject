@@ -6,12 +6,11 @@ import Link from "next/link";
 import { Card } from "./ui/card";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Label } from "./ui/label";
 
 export const Sidebar = () => {
     const { user, clearUser } = useUserStore();
-    const router = useRouter();
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
 
