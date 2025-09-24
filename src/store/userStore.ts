@@ -1,9 +1,8 @@
-
-import { User } from '@/types/user';
+import { LoggedUser, User } from '@/types/user';
 import { create } from 'zustand';
 
 interface UserState {
-    user: User | null;
+    user: LoggedUser | null;
     setUser: (user: User) => void;
     clearUser: () => void;
 }
