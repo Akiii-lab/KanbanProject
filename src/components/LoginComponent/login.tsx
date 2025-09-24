@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Label } from "../ui/label";
 import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";
+import { LogoIcon } from "../logo";
 
 export const LoginComponent = () => {
 
@@ -66,7 +67,10 @@ export const LoginComponent = () => {
                 borderRadius: 'var(--radius, 0.625rem)',
             }}
         >
-            <CardHeader className="text-center font-bold">Login</CardHeader>
+            <CardHeader className="text-center font-bold">
+                <LogoIcon/>
+                LOGIN
+            </CardHeader>
             <div className="form">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">

@@ -12,11 +12,12 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RegisterFormData, registerSchema} from "@/schemas";
+import { RegisterFormData, registerSchema } from "@/schemas";
 import { Card, CardHeader } from "../ui/card";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Label } from "../ui/label";
+import { LogoIcon } from "../logo";
 
 export const SingUpComponent = () => {
     const form = useForm<RegisterFormData>({
@@ -27,7 +28,7 @@ export const SingUpComponent = () => {
             confirmPassword: "",
         },
     });
-// prueba
+    // prueba
     async function onSubmit(values: RegisterFormData) {
         const res = await fetch('/api/user/register', {
             method: 'POST',
@@ -59,7 +60,10 @@ export const SingUpComponent = () => {
                 borderRadius: 'var(--radius, 0.625rem)',
             }}
         >
-            <CardHeader className="text-center font-bold">Register</CardHeader>
+            <CardHeader className="text-center font-bold">
+                <LogoIcon />
+                REGISTER
+            </CardHeader>
             <div className="form">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
