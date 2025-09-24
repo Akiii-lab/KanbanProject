@@ -1,7 +1,7 @@
 "use client";
 
 import { FolderKanbanIcon, HomeIcon, LogOutIcon, PanelLeftCloseIcon, UserIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card } from "./ui/card";
 import { useUserStore } from "@/store/userStore";
@@ -10,9 +10,10 @@ import { usePathname } from "next/navigation";
 import { Label } from "./ui/label";
 
 export const Sidebar = () => {
-    const { user, clearUser } = useUserStore();
+    const { user, clearUser, sidebarCollapsed, setSidebarCollapsed } = useUserStore();
     const pathname = usePathname();
-    const [collapsed, setCollapsed] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => { setIsClient(true); }, []);
 
     const handleLogout = async () => {
         const res = await fetch('/api/user/logout', {
@@ -30,8 +31,8 @@ export const Sidebar = () => {
     const isActive = (href: string) => pathname.startsWith(href);
 
     return (
-        <div className={`flex h-screen ${collapsed ? 'w-20' : 'w-max'} p-4 transition-all duration-300`}>
-            <Card className={`p-6 bg-[color:var(--custom-dark)] text-white h-full ${collapsed ? 'w-16' : 'w-max'} transition-all duration-300`}>
+        <div className={`flex h-screen ${sidebarCollapsed ? 'w-20' : 'w-max'} p-4 transition-all duration-300`}>
+            <Card className={`p-6 bg-[color:var(--custom-dark)] text-white h-full ${sidebarCollapsed ? 'w-16' : 'w-max'} transition-all duration-300`}>
                 <aside className="w-full h-full">
                     <nav className="flex flex-col gap-4 h-full">
                         <div className="flex flex-col justify-between items-center h-full">
@@ -39,7 +40,7 @@ export const Sidebar = () => {
                                 <div className="group flex flex-row gap-2 items-center hover:text-[color:var(--c-violet)] hover:cursor-pointer transition-colors">
                                     <Link
                                         href="/dashboard"
-                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${collapsed ? 'hidden' : ''} ${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
+                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${sidebarCollapsed ? 'hidden' : ''} ${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
                                     >
                                         Dashboard
                                     </Link>
@@ -48,7 +49,7 @@ export const Sidebar = () => {
                                 <div className="group flex flex-row gap-2 items-center hover:text-[color:var(--c-purple)] hover:cursor-pointer transition-colors">
                                     <Link
                                         href="/projects"
-                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${collapsed ? 'hidden' : ''} ${isActive('/projects') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
+                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${sidebarCollapsed ? 'hidden' : ''} ${isActive('/projects') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
                                     >
                                         Projects
                                     </Link>
@@ -56,12 +57,12 @@ export const Sidebar = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 items-center border-t pt-4 w-full">
-                                <div className="flex flex-row gap-2 items-center hover:cursor-pointer hover:text-[color:var(--c-violet)] transition-colors" onClick={() => setCollapsed(!collapsed)}>
-                                    <PanelLeftCloseIcon size={25} className={collapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
+                                <div className="flex flex-row gap-2 items-center hover:cursor-pointer hover:text-[color:var(--c-violet)] transition-colors" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+                                    <PanelLeftCloseIcon size={25} className={sidebarCollapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
                                 </div>
                                 <div className="flex flex-col gap-2 items-center hover:cursor-pointer hover:text-[color:var(--c-violet)] transition-colors">
                                     <UserIcon size={25} className="size-8" />
-                                    {!collapsed && <Label className="text-foreground">{user?.username}</Label>}
+                                    {!sidebarCollapsed && isClient && <Label className="text-foreground">{user?.username}</Label>}
                                 </div>
                                 <LogOutIcon
                                     size={25}
