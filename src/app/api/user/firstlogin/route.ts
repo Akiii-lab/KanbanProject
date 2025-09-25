@@ -50,9 +50,9 @@ export async function POST(req: NextRequest) {
 
     return response;
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: "Error updating user", details: error?.message || error, ok: false },
+      { error: "Error updating user", details: (error as Error)?.message || error, ok: false },
       { status: 500 }
     );
   }

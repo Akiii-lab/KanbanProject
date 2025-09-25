@@ -6,6 +6,7 @@ export function middleware(request: NextRequest) {
     const user = userCookie && userCookie.value && userCookie.value !== 'undefined' ? JSON.parse(userCookie.value) : null;
 
     const publicPaths = ['/login', '/register'];
+    const protectedPaths = ['/dashboard', '/onboarding', '/boards'];
     if (user) {
         if (request.nextUrl.pathname === '/onboarding' && !user.first_login) {
             return NextResponse.redirect(new URL('/dashboard', request.url));
@@ -19,9 +20,10 @@ export function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/dashboard', request.url));
         }
     }
-
-    if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
-        return NextResponse.redirect(new URL('/login', request.url));
+    if (!user){
+        if (protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
     }
 
     return NextResponse.next();
@@ -33,6 +35,7 @@ export const config = {
         '/login',
         '/register',
         '/dashboard/:path*',
-        '/onboarding'
+        '/onboarding',
+        '/boards/:path*',
     ],
 };
