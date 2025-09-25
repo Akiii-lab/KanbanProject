@@ -3,7 +3,7 @@ import { Loader } from "@/components/Loader/loader";
 import { useState } from "react";
 
 export default function DashboardPage() {
-    const [loading, setLoading] = useState(true);
+    const [loading] = useState(true);
 
     if (loading) {
         return (

@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardHeader } from "../ui/card";
-import { Form } from "../ui/form";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
 import { Loader } from "../Loader/loader";
