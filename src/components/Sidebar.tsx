@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Card } from "./ui/card";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { Label } from "./ui/label";
 
 export const Sidebar = () => {
@@ -40,25 +40,25 @@ export const Sidebar = () => {
                                 <div className="group flex flex-row gap-2 items-center hover:text-[color:var(--c-violet)] hover:cursor-pointer transition-colors">
                                     <Link
                                         href="/dashboard"
-                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${sidebarCollapsed ? 'hidden' : ''} ${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
+                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${isClient && sidebarCollapsed ? 'hidden' : ''} ${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
                                     >
                                         Dashboard
                                     </Link>
-                                    <HomeIcon size={25} className={`${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : ''} group-hover:text-[color:var(--c-violet)] transition-colors`} />
+                                    <HomeIcon size={25} onClick={() => {redirect('/dashboard');}} className={`${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : ''} group-hover:text-[color:var(--c-violet)] transition-colors`} />
                                 </div>
                                 <div className="group flex flex-row gap-2 items-center hover:text-[color:var(--c-purple)] hover:cursor-pointer transition-colors">
                                     <Link
-                                        href="/projects"
-                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${sidebarCollapsed ? 'hidden' : ''} ${isActive('/projects') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
+                                        href="/boards"
+                                        className={`font-bold transition-colors hover:text-[color:var(--c-violet)] ${isClient && sidebarCollapsed ? 'hidden' : ''} ${isActive('/boards') ? 'text-[color:var(--c-purple)]' : 'text-white'} hover:text-[color:var(--c-violet)]`}
                                     >
-                                        Projects
+                                        Boards
                                     </Link>
-                                    <FolderKanbanIcon size={25} className={`group-hover:text-[color:var(--c-violet)] transition-colors ${isActive('/projects') ? 'text-[color:var(--c-purple)]' : ''}`} />
+                                    <FolderKanbanIcon onClick={() => {redirect('/boards');}} size={25} className={`group-hover:text-[color:var(--c-violet)] transition-colors ${isActive('/boards') ? 'text-[color:var(--c-purple)]' : ''}`} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 items-center border-t pt-4 w-full">
                                 <div className="flex flex-row gap-2 items-center hover:cursor-pointer hover:text-[color:var(--c-violet)] transition-colors" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
-                                    <PanelLeftCloseIcon size={25} className={sidebarCollapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
+                                    <PanelLeftCloseIcon size={25} className={isClient && sidebarCollapsed ? 'rotate-180 transition-transform' : 'transition-transform'} />
                                 </div>
                                 <div className="flex flex-col gap-2 items-center hover:cursor-pointer hover:text-[color:var(--c-violet)] transition-colors">
                                     <UserIcon size={25} className="size-8" />

@@ -9,4 +9,11 @@ export interface User {
 export interface LoggedUser {
     username: string;
     email: string;
+    id: number;
+}
+
+export interface UserBoard {
+    id: number;
+    username: string;
+    email: string;
 }

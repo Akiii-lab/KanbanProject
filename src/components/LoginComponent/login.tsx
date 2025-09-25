@@ -22,6 +22,7 @@ import { Label } from "../ui/label";
 import { LogoIcon } from "../logo";
 import { useState } from "react";
 import { Loader } from "../Loader/loader";
+import { LoggedUser } from "@/types/user";
 
 
 export const LoginComponent = () => {
@@ -56,8 +57,8 @@ export const LoginComponent = () => {
             if (!data.ok) {
                 toast.error('Error al iniciar sesión');
             } else {
-                console.log(data.data);
-                setUser(data.data);
+                const Logeduser : LoggedUser = data.data;
+                setUser(Logeduser);
                 toast.success('Inicio de sesión exitoso');
                 router.push('/');
             }
