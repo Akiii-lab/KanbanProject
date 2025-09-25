@@ -100,32 +100,7 @@ export const HeroComponent = () => {
                     </p>
                 </div>
 
-                {/* Features Section */}
-                <div className="mb-12 max-w-4xl">
-                    <h2 className="text-2xl md:text-3xl font-semibold mb-8 text-gray-200">
-                        Features
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {features.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="flex items-start space-x-3 p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:bg-white/10 group"
-                                style={{
-                                    animationDelay: `${index * 0.1}s`
-                                }}
-                            >
-                                <div className="text-purple-400 mt-1">
-                                    {feature.icon}
-                                </div>
-                                <p className="text-gray-300 text-sm leading-relaxed">
-                                    {feature.text}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* CTA Button */}
+                {/* CTA Button - moved here after subtitle */}
                 <div className="mb-16">
                     <Link href="/register">
                         <Button 
@@ -135,6 +110,56 @@ export const HeroComponent = () => {
                             Get Started for Free
                         </Button>
                     </Link>
+                </div>
+
+                {/* Features Section */}
+                <div className="mb-16 max-w-6xl w-full">
+                    <h2 className="text-2xl md:text-3xl font-semibold mb-8 text-gray-200">
+                        Features
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* First row - 3 columns */}
+                        {features.map((feature, index) => (
+                            index < 3 && (
+                            <div
+                                key={index}
+                                className="flex flex-col items-center text-center space-y-3 p-6 rounded-lg bg-white/5 backdrop-blur-sm border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:bg-white/10"
+                                style={{
+                                    animationDelay: `${index * 0.1}s`
+                                }}
+                            >
+                                <div className="text-purple-400">
+                                    {feature.icon}
+                                </div>
+                                <p className="text-gray-300 text-sm leading-relaxed max-w-xs">
+                                    {feature.text}
+                                </p>
+                            </div>
+                            )
+                        ))}
+                    </div>
+                    
+                    {/* Second row - 2 columns centered */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 max-w-2xl mx-auto">
+                        {features.map((feature, index) => (
+                            index >= 3 && (
+                            <div
+                                key={index}
+                                className="flex flex-col items-center text-center space-y-3 p-6 rounded-lg bg-white/5 backdrop-blur-sm border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:bg-white/10"
+                                style={{
+                                    animationDelay: `${index * 0.1}s`
+                                }}
+                            >
+                                <div className="text-purple-400">
+                                    {feature.icon}
+                                </div>
+                                <p className="text-gray-300 text-sm leading-relaxed max-w-xs">
+                                    {feature.text}
+                                </p>
+                            </div>
+                            )
+                        ))}
+                    </div>
                 </div>
             </div>
 
