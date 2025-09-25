@@ -1,8 +1,7 @@
 import { UserBoard } from "@/types/user";
 import { GetDB } from "@/utils/db";
-import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     const db = await GetDB();
 
     const result = await db.request()

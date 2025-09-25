@@ -35,6 +35,7 @@ export default function BoardsPage() {
             console.log(data.data);
         } catch (err) {
             toast.error('Connection error.');
+            console.error(err);
         } finally {
             setLoading(false);
         }
