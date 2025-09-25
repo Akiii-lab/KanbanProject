@@ -28,14 +28,14 @@ export async function POST(req: NextRequest) {
 
         const boardId = res.recordset[0].id;
 
-        for (let userId of allUsers) {
+        for (const userId of allUsers) {
             await db.request()
                 .input('boardId', boardId)
                 .input('userId', userId)
                 .query(`INSERT INTO KanbanProject.BoardUsers (board_id, user_id) VALUES (@boardId, @userId)`);
         }
         return new Response(JSON.stringify({ message: "Board created successfully", ok: true }), { status: 201 });
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error creating board:", error);
         return new Response(JSON.stringify({ error: "Error creating board", ok: false }), { status: 500 });
     }
