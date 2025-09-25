@@ -82,7 +82,7 @@ export const HeroComponent = () => {
                         <Link href="/login">
                             <Button 
                                 variant="ghost" 
-                                className="text-white hover:text-gray-300 hover:bg-white/10 transition-all duration-300"
+                                className="text-white hover:text-gray-300 hover:bg-white/10 transition-all duration-300 hover:cursor-pointer"
                             >
                                 Log in
                             </Button>

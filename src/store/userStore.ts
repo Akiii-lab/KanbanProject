@@ -4,7 +4,7 @@ import { create } from 'zustand';
 interface UserState {
     user: LoggedUser | null;
     sidebarCollapsed: boolean;
-    setUser: (user: User) => void;
+    setUser: (user: LoggedUser) => void;
     clearUser: () => void;
     setSidebarCollapsed: (collapsed: boolean) => void;
 }

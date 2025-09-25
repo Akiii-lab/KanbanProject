@@ -17,7 +17,6 @@ export async function GetDB() {
 	const user = process.env.DB_USER;
 	const password = process.env.DB_PWD;
 	const database = process.env.DB_NAME;
-	console.log('DB Config:', { server, user, password, database });
 	if (!server || !user || !password || !database) throw new Error('Faltan variables de entorno para la conexión');
 
 	const config: sql.config = {
