@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
             .query(`INSERT INTO KanbanProject.Users (email, password, create_time) VALUES (@email, @password, @create_time);`);
 
         return NextResponse.json({ message: 'Usuario registrado exitosamente', ok: true }, { status: 201 });
-    } catch (error: any) {
-        return NextResponse.json({ error: 'Error al registrar el usuario', details: error?.message || error, ok: false }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: 'Error al registrar el usuario', details: (error as Error)?.message || error, ok: false }, { status: 500 });
     }
 }

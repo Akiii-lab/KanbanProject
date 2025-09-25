@@ -153,7 +153,7 @@ export const LoginComponent = () => {
                             Sign In
                         </Button>
                         <div className="text-center flex flex-row gap-1">
-                            <Label>Don't have an account? </Label>
+                            <Label>Don&apos;t have an account? </Label>
                             <Link href="/register" className="text-sm font-bold [color:var(--c-violet)] hover:underline">
                                 Register
                             </Link>
