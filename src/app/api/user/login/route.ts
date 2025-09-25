@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
         return response;
-    } catch (error: any) {
-        return NextResponse.json({ error: 'Error al iniciar sesión con el usuario', details: error?.message || error, ok: false }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: 'Error al iniciar sesión con el usuario', details: (error as Error)?.message || error, ok: false }, { status: 500 });
     }
 }
