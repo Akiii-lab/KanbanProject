@@ -5,7 +5,7 @@ import { LogoIcon } from "@/components/logo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { CheckCircle, Users, FileText, Clock, BarChart3 } from "lucide-react";
-import Footer from "@/components/Footer/footer"; // 👈 Importa el Footer
+import Footer from "@/components/Footer/footer"; 
 
 export const HeroComponent = () => {
     const [displayedText, setDisplayedText] = useState("");
@@ -65,18 +65,15 @@ export const HeroComponent = () => {
             `}</style>
 
             <div className="min-h-screen bg-black text-white relative overflow-hidden">
-                {/* Fondo principal con degradados */}
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
                     <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 via-transparent to-transparent" />
 
-                    {/* Orbes decorativos */}
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-pulse" />
                     <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-violet-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/5 rounded-full blur-2xl animate-pulse delay-500" />
                 </div>
 
-                {/* Navegación */}
                 <nav className="relative z-10 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto backdrop-blur-sm">
                     <div className="flex items-center">
                         <LogoIcon />
@@ -99,9 +96,7 @@ export const HeroComponent = () => {
                     </div>
                 </nav>
 
-                {/* Hero Content */}
                 <div className="relative z-10 flex flex-col items-center justify-center min-h-[85vh] px-6 text-center">
-                    {/* Heading */}
                     <div className="mb-8">
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-violet-300 bg-clip-text text-transparent leading-tight">
                             TaskFlow
@@ -109,7 +104,6 @@ export const HeroComponent = () => {
                         <div className="w-32 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
                     </div>
 
-                    {/* Subtitle */}
                     <div className="text-gray-300 text-lg md:text-xl max-w-3xl mb-12 leading-relaxed min-h-[4rem] flex items-center justify-center">
                         <p className="font-light">
                             {displayedText}
@@ -119,7 +113,6 @@ export const HeroComponent = () => {
                         </p>
                     </div>
 
-                    {/* CTA */}
                     <div className="mb-16">
                         <Link href="/register">
                             <Button
@@ -131,7 +124,6 @@ export const HeroComponent = () => {
                         </Link>
                     </div>
 
-                    {/* Features */}
                     <div className="mb-16 max-w-6xl w-full">
                         <h2 className="text-2xl md:text-3xl font-semibold mb-8 text-gray-200">
                             Features
@@ -176,14 +168,12 @@ export const HeroComponent = () => {
                     </div>
                 </div>
 
-                {/* Detalles decorativos */}
                 <div className="absolute top-1/2 left-10 w-3 h-3 bg-purple-500 rounded-full opacity-60 animate-pulse" />
                 <div className="absolute top-1/3 right-20 w-2 h-2 bg-violet-400 rounded-full opacity-40 animate-pulse" />
                 <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full opacity-50 animate-pulse" />
                 <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-violet-300 rounded-full opacity-60 animate-pulse" />
                 <div className="absolute bottom-1/3 left-1/2 w-1.5 h-1.5 bg-purple-300 rounded-full opacity-40 animate-pulse" />
 
-                {/* Grid overlay */}
                 <div className="absolute inset-0 opacity-5">
                     <div
                         className="absolute inset-0"
