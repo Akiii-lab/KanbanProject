@@ -1,6 +1,4 @@
 "use client";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
 import { Loader } from "@/components/Loader/loader";
 import { Sidebar } from "@/components/Sidebar";
 import { useGlobalStore } from "@/store/globalStore";
@@ -24,8 +22,7 @@ export default function UserPagesLayout({ children }: { children: React.ReactNod
                     {children}
                 </main>
             </div>
-            <SpeedInsights />
-            <Analytics />
+            
         </>
     );
 }
