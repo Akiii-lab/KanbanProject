@@ -27,10 +27,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             return new Response(JSON.stringify({ error: "Task not found", ok: false }), { status: 404 });
         }
 
+        const date = new Date().toISOString().split('T')[0];
         await db.request()
             .input('taskId', taskId)
             .input('stateId', parseInt(state_id))
-            .query('UPDATE KanbanProject.Tasks SET state_id = @stateId WHERE id = @taskId');
+            .input('updatedAt', date)
+            .query('UPDATE KanbanProject.Tasks SET state_id = @stateId, updated_at = @updatedAt WHERE id = @taskId');
 
         return new Response(JSON.stringify({ ok: true, message: "Task updated successfully" }), { status: 200 });
     } catch (error) {
