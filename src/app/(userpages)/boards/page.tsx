@@ -55,7 +55,7 @@ export default function BoardsPage() {
 
     return (
         <>
-            <Card className="flex flex-col bg-black h-full">
+            <Card className="flex flex-col bg-black h-full w-full">
                 <CardHeader className="flex flex-row justify-between">
                     <div className="text-2xl font-bold">
                         Boards
