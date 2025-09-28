@@ -26,6 +26,7 @@ export const SingUpComponent = () => {
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState<string | null>(null);
     const [stateEye, setStateEye] = useState(false);
+    const [confirmStateEye, setConfirmStateEye] = useState(false);
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -59,14 +60,14 @@ export const SingUpComponent = () => {
         setLoading(false);
     }
 
-    if(loading){
+    if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 {loadingText ? <Loader text={loadingText} /> : <Loader />}
             </div>
         )
     }
-    
+
     return (
         <Card
             className="w-md p-6 shadow-lg"
@@ -111,16 +112,16 @@ export const SingUpComponent = () => {
                                         <FormLabel style={{ fontFamily: 'var(--font-montserrat), Montserrat, sans-serif' }}>Password</FormLabel>
                                         <FormControl>
                                             <div className="relative w-full">
-                                            <Input
-                                                className="main-input pr-10"
-                                                placeholder="Enter your password"
-                                                type={stateEye ? 'text' : 'password'}
-                                                {...field}
-                                            />
-                                            <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setStateEye(!stateEye)}>
-                                                {stateEye ? <Eye size={20} /> : <EyeClosed size={20} />}
-                                            </button>
-                                            </div>      
+                                                <Input
+                                                    className="main-input"
+                                                    placeholder="Enter your password"
+                                                    type={stateEye ? 'text' : 'password'}
+                                                    {...field}
+                                                />
+                                                <Button type="button" variant={"ghost"} className="hover:bg-transparent absolute right-3 hover:cursor-pointer   top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setConfirmStateEye(!confirmStateEye)}>
+                                                    {confirmStateEye ? <Eye size={20} /> : <EyeClosed size={20} />}
+                                                </Button>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                         
@@ -128,7 +129,6 @@ export const SingUpComponent = () => {
                                     
                                 )}
                             />
-                            
                         </div>
                         <div className="container-1">
                             <FormField
@@ -138,18 +138,16 @@ export const SingUpComponent = () => {
                                     <FormItem className="group">
                                         <FormLabel style={{ fontFamily: 'var(--font-montserrat), Montserrat, sans-serif' }}>Confirm password</FormLabel>
                                         <FormControl>
-                                            <div>
-                                                <div className="relative w-full">
+                                            <div className="relative w-full">
                                                 <Input
-                                                    className="main-input pr-10"
+                                                    className="main-input"
                                                     placeholder="Confirm your password"
                                                     type={stateEye ? 'text' : 'password'}
                                                     {...field}
                                                 />
-                                                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setStateEye(!stateEye)}>
+                                                <Button type="button" variant={"ghost"} className="hover:bg-transparent absolute right-3 hover:cursor-pointer   top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setStateEye(!stateEye)}>
                                                     {stateEye ? <Eye size={20} /> : <EyeClosed size={20} />}
-                                                </button>
-                                                </div>
+                                                </Button>
                                             </div>
                                         </FormControl>
                                         <FormMessage />
