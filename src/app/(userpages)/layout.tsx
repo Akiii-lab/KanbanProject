@@ -16,7 +16,7 @@ export default function UserPagesLayout({ children }: { children: React.ReactNod
     }
 
     return (
-        <div className="flex min-h-screen w-full">
+        <div className="flex h-screen w-full">
             <Sidebar />
             <main className="flex-1 p-8">
                 {children}

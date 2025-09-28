@@ -97,7 +97,7 @@ export default function BoardsPage() {
                                             <Button
                                                 variant={"dark"}
                                                 className="border border-[color:var(--c-purple)]"
-                                                onClick={() => router.push(`/board/${board.id}`)}
+                                                onClick={() => router.push(`/boards/${board.id}`)}
                                             >
                                                 View Board
                                             </Button>
