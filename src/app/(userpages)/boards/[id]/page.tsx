@@ -1,14 +1,12 @@
 "use client";
 import { Loader } from "@/components/Loader/loader";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Board } from "@/types/board";
 import { Task, UserTask } from "@/types/task";
-import { MoreHorizontal, PlusIcon, Users2 } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { PlusIcon, Users2 } from "lucide-react";
+import { use, useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
-import { DndContext, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { DroppableColumn } from "@/components/(usercomponents)/DroppableColumn/DroppableColumn";
 
 interface BoardPageProps {
@@ -17,10 +15,9 @@ interface BoardPageProps {
 
 export default function BoardPage({ params }: BoardPageProps) {
     const { id } = use(params);
-    const [openTaskModal, setOpenTaskModal] = useState(false);
     const [boardData, setBoardData] = useState<Board | null>(null);
     const [Tasks, setTasks] = useState<Task[] | null>(null);
-    const [Users, setUsers] = useState<UserTask[] | null>(null);
+    const [users, setUsers] = useState<UserTask[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         pendingTasks: 0,
@@ -29,7 +26,7 @@ export default function BoardPage({ params }: BoardPageProps) {
         inProgressTasks: 0,
     });
 
-    const fetchBoardData = async () => {
+    const fetchBoardData = useCallback(async () => {
         try {
             const res = await fetch(`/api/board/${id}`, {
                 method: "GET",
@@ -55,7 +52,7 @@ export default function BoardPage({ params }: BoardPageProps) {
         } finally {
             setLoading(false);
         }
-    }
+    }, [id]); // Ahora id es la única dependencia real
 
     const handleStats = (Tasks: Task[]) => {
         if (!Tasks) return;
@@ -117,7 +114,7 @@ export default function BoardPage({ params }: BoardPageProps) {
 
     useEffect(() => {
         fetchBoardData();
-    }, [id]);
+    }, [fetchBoardData]); // Ahora fetchBoardData es estable gracias a useCallback
 
     if (loading) {
         return (

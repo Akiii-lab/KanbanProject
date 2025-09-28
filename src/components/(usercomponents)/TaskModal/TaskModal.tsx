@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 import { useBoardStore } from "@/store/boardStore";
 
 interface TaskModalProps {
@@ -9,4 +9,4 @@ interface TaskModalProps {
 
 export const TaskModal = ({ isOpen, onOpenChange, onSubmit }: TaskModalProps) => {  
     const { users } = useBoardStore();
-}
+} */

@@ -1,8 +1,8 @@
 import { GetDB } from "@/utils/db";
 import { NextRequest } from "next/server";
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-    const { id: taskId } = params;
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id: taskId } = await params;
     const user = req.cookies.get("user")?.value;
 
     if (!user) {
