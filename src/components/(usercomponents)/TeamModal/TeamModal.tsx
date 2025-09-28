@@ -2,12 +2,9 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { SaveTask, UserTask } from "@/types/task";
-import { Label } from '@radix-ui/react-label';
+import { UserTask } from "@/types/task";
 import { User } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 interface TeamModalProps {
     isOpen: boolean;

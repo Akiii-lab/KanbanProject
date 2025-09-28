@@ -134,6 +134,7 @@ export default function BoardPage({ params }: BoardPageProps) {
     }
 
     const handleDeleteTask = async (taskId: number) => {
+        console.log("Delete task with id:", taskId);
         //TODO: create endpoint to delete task
     }
 

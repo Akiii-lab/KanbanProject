@@ -18,10 +18,9 @@ interface TaskModalProps {
 }
 
 export const TaskModal = ({ isOpen, onOpenChange, task, user, userEmail, onSave, onDelete }: TaskModalProps) => {
+    const [stateId, setStateId] = useState(task?.state_id || 1);
 
     if (!task) return null;
-
-    const [stateId, setStateId] = useState(task.state_id);
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
             <DialogContent showCloseButton={false}>
