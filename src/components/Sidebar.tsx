@@ -8,14 +8,18 @@ import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
 import { redirect, usePathname } from "next/navigation";
 import { Label } from "./ui/label";
+import { useGlobalStore } from "@/store/globalStore";
 
 export const Sidebar = () => {
     const { user, clearUser, sidebarCollapsed, setSidebarCollapsed } = useUserStore();
     const pathname = usePathname();
     const [isClient, setIsClient] = useState(false);
     useEffect(() => { setIsClient(true); }, []);
-
+    const { setGlobalLoading, setGlobalText } = useGlobalStore();
+    
     const handleLogout = async () => {
+        setGlobalLoading(true);
+        setGlobalText('Logging out...');
         const res = await fetch('/api/user/logout', {
             method: 'POST',
         });
@@ -25,7 +29,10 @@ export const Sidebar = () => {
             return;
         }
         clearUser();
-        window.location.reload();
+        toast.success('Cierre de sesión exitoso');
+        setGlobalText(null);
+        setGlobalLoading(false);
+        redirect('/');
     };
 
     const isActive = (href: string) => pathname.startsWith(href);

@@ -23,11 +23,13 @@ import { LogoIcon } from "../logo";
 import { useState } from "react";
 import { Loader } from "../Loader/loader";
 import { LoggedUser } from "@/types/user";
+import { Eye, EyeClosed } from "lucide-react";
 
 
 export const LoginComponent = () => {
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState<string | null>(null);
+    const [stateEye, setStateEye] = useState(false);
     const router = useRouter();
     const { setUser } = useUserStore();
 
@@ -57,7 +59,7 @@ export const LoginComponent = () => {
             if (!data.ok) {
                 toast.error('Error al iniciar sesión');
             } else {
-                const Logeduser : LoggedUser = data.data;
+                const Logeduser: LoggedUser = data.data;
                 setUser(Logeduser);
                 toast.success('Inicio de sesión exitoso');
                 router.push('/');
@@ -121,12 +123,18 @@ export const LoginComponent = () => {
                                     <FormItem className="group">
                                         <FormLabel style={{ fontFamily: 'var(--font-montserrat), Montserrat, sans-serif' }}>Password</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                className="main-input"
-                                                placeholder="Enter your password"
-                                                type="password"
-                                                {...field}
-                                            />
+                                            <div className="relative w-full">
+                                                <Input
+                                                    className="main-input"
+                                                    placeholder="Enter your password"
+                                                    type={stateEye ? 'text' : 'password'}
+                                                    {...field}
+                                                />
+                                                <Button type="button" variant={"ghost"} className="hover:bg-transparent absolute right-3 hover:cursor-pointer   top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setStateEye(!stateEye)}>
+                                                    {stateEye ? <Eye size={20} /> : <EyeClosed size={20} />}
+                                                </Button>
+                                            </div>
+
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

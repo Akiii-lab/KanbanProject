@@ -1,4 +1,4 @@
-name: CI Pipeline - Debug
+name: CI Pipeline
 on:
   push:
     branches: [ "dev", "main" ]
@@ -49,28 +49,6 @@ jobs:
       env:
         NODE_ENV: production
 
-  # Job para debug - mostrar información del contexto
-  debug-context:
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-    - name: Debug GitHub context
-      run: |
-        echo "DEBUGGING GITHUB CONTEXT:"
-        echo "Branch: ${{ github.ref }}"
-        echo "Event: ${{ github.event_name }}"
-        echo "Commit message: ${{ github.event.head_commit.message }}"
-        echo "Actor: ${{ github.actor }}"
-        echo "Repository: ${{ github.repository }}"
-        echo ""
-        echo "CONDITIONS CHECK:"
-        echo "Is dev branch? ${{ github.ref == 'refs/heads/dev' }}"
-        echo "Is push event? ${{ github.event_name == 'push' }}"
-        echo "Contains [skip ci]? ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
-        echo ""
-        echo "FULL GITHUB CONTEXT:"
-        echo '${{ toJson(github) }}'
-
   auto-merge-to-main:
     needs: quality-checks
     runs-on: ubuntu-latest
@@ -99,14 +77,11 @@ jobs:
         
     - name: Merge dev into main
       run: |
-        echo "🔄 Starting merge process..."
+        echo "Starting merge process..."
         git fetch --all
-        echo "📋 Available branches:"
         git branch -a
-        echo "🔀 Checking out main..."
         git checkout main
-        echo "📥 Pulling latest main..."
         git pull origin main
-        echo "🔀 Merging dev into main..."
         git merge origin/dev --no-ff -m "Auto-merge: dev → main [skip ci]"
         git push origin main
+        echo "Success merge into main"

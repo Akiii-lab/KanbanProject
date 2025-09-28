@@ -8,6 +8,8 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card"
       className={cn(
         "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+        // responsive without taking full width on mobile
+        "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto w-full px-4 sm:px-6",
         className
       )}
       {...props}
