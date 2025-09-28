@@ -124,10 +124,12 @@ export const SingUpComponent = () => {
                                             </div>
                                         </FormControl>
                                         <FormMessage />
+                                        
                                     </FormItem>
+                                    
                                 )}
                             />
-                        </div>s
+                        </div>
                         <div className="container-1">
                             <FormField
                                 control={form.control}
