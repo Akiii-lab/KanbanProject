@@ -1,0 +1,112 @@
+name: CI Pipeline - Debug
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  NODE_ENV: production
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [22.x]
+      fail-fast: false
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest
+        
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Type checking
+      run: npx tsc --noEmit
+      continue-on-error: false
+      
+    - name: Run ESLint
+      run: pnpm lint
+      continue-on-error: false
+      
+    - name: Build Next.js application
+      run: pnpm run build
+      continue-on-error: false
+      env:
+        NODE_ENV: production
+
+  # Job para debug - mostrar información del contexto
+  debug-context:
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Debug GitHub context
+      run: |
+        echo "DEBUGGING GITHUB CONTEXT:"
+        echo "Branch: ${{ github.ref }}"
+        echo "Event: ${{ github.event_name }}"
+        echo "Commit message: ${{ github.event.head_commit.message }}"
+        echo "Actor: ${{ github.actor }}"
+        echo "Repository: ${{ github.repository }}"
+        echo ""
+        echo "CONDITIONS CHECK:"
+        echo "Is dev branch? ${{ github.ref == 'refs/heads/dev' }}"
+        echo "Is push event? ${{ github.event_name == 'push' }}"
+        echo "Contains [skip ci]? ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
+        echo ""
+        echo "FULL GITHUB CONTEXT:"
+        echo '${{ toJson(github) }}'
+
+  auto-merge-to-main:
+    needs: quality-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Condición simplificada para debug
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+    
+    steps:
+    - name: Debug merge conditions
+      run: |
+        echo "🔍 MERGE CONDITIONS:"
+        echo "Branch: ${{ github.ref }}"
+        echo "Event: ${{ github.event_name }}"
+        echo "Should merge: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}"
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Configure Git
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+    - name: Merge dev into main
+      run: |
+        echo "🔄 Starting merge process..."
+        git fetch --all
+        echo "📋 Available branches:"
+        git branch -a
+        echo "🔀 Checking out main..."
+        git checkout main
+        echo "📥 Pulling latest main..."
+        git pull origin main
+        echo "🔀 Merging dev into main..."
+        git merge origin/dev --no-ff -m "Auto-merge: dev → main [skip ci]"
+        git push origin main
