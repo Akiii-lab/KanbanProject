@@ -19,3 +19,9 @@ export interface UserTask {
     username: string;
     email: string;
 }
+
+export interface SaveTask {
+    title: string;
+    content: string;
+    user_id: number;
+}

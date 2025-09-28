@@ -11,9 +11,10 @@ interface DroppableColumnProps {
     color: string;
     tasks: Task[];
     count: number;
+    onTaskClick: (task: Task) => void;
 }
 
-export function DroppableColumn({ id, title, color, tasks, count }: DroppableColumnProps) {
+export function DroppableColumn({ id, title, color, tasks, count, onTaskClick }: DroppableColumnProps) {
     const { isOver, setNodeRef } = useDroppable({
         id: id,
     });
@@ -56,6 +57,7 @@ export function DroppableColumn({ id, title, color, tasks, count }: DroppableCol
                             key={task.id} 
                             task={task} 
                             columnColor={color}
+                            onTaskClick={onTaskClick}
                         />
                     ))}
                 </CardContent>
