@@ -62,7 +62,7 @@ export const LoginComponent = () => {
                 const Logeduser: LoggedUser = data.data;
                 setUser(Logeduser);
                 toast.success('Inicio de sesión exitoso');
-                router.push('/');
+                router.push('/dashboard');
             }
         } catch (error) {
             console.error(error);
