@@ -11,6 +11,7 @@ import { DroppableColumn } from "@/components/(usercomponents)/DroppableColumn/D
 import { CreateTaskModal } from "@/components/(usercomponents)/TaskModal/CreateTaskModal";
 import { TeamModal } from "@/components/(usercomponents)/TeamModal/TeamModal";
 import { TaskModal } from "@/components/(usercomponents)/TaskModal/TaskModal";
+import { set } from "zod";
 
 interface BoardPageProps {
     params: Promise<{ id: string }>;
@@ -134,7 +135,33 @@ export default function BoardPage({ params }: BoardPageProps) {
     }
 
     const handleDeleteTask = async (taskId: number) => {
-        console.log("Delete task with id:", taskId);
+        if (!taskId) return;
+        try{
+            setLoading(true);
+            const res = await fetch(`/api/task/${taskId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            const data = await res.json();
+            if (!data.ok) {
+                throw new Error(data.error || "Failed to delete task");
+            }
+            setViewTaskOpen(false);
+            toast.success("Task deleted successfully");
+            fetchBoardData();
+        } catch (error) {
+            if (Tasks) {
+                setTasks(Tasks);
+                handleStats(Tasks);
+            }
+            toast.error("Failed to delete task");
+            console.error('Error deleting task:', error);
+        } finally {
+            setLoading(false);
+        }
+        
         //TODO: create endpoint to delete task
     }
 
