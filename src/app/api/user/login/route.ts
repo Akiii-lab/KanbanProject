@@ -18,6 +18,12 @@ export async function POST(req: NextRequest) {
             .query(`SELECT * FROM KanbanProject.Users WHERE email = @email AND password = @password`);
 
         const user: User | undefined = result.recordset[0];
+        if (!user) {
+            return NextResponse.json(
+                { error: 'Credenciales inválidas', ok: false },
+                { status: 401 }
+            );
+        }
         const response = NextResponse.json({ message: 'Usuario iniciado exitosamente', ok: true, data: user }, { status: 201 });
         response.cookies.set('user', JSON.stringify(user), {
             path: '/',
