@@ -48,6 +48,7 @@ export default function BoardPage({ params }: BoardPageProps) {
             setBoardData(data.data.board);
             setTasks(data.data.tasks);
             handleStats(data.data.tasks);
+            console.log("userTasks", data.data.userTasks);
             const uniqueUsersMap = new Map<number, UserTask>();
             data.data.userTasks.forEach((user: UserTask) => {
                 if (!uniqueUsersMap.has(user.id)) {
@@ -67,6 +68,12 @@ export default function BoardPage({ params }: BoardPageProps) {
             setLoading(false);
         }
     }, [id]);
+
+    useEffect(() => {
+        console.log(Tasks);
+        console.log(users);
+        console.log(boardData);
+    }, [Tasks, users, boardData]);
 
     const handleStats = (Tasks: Task[]) => {
         if (!Tasks) return;
