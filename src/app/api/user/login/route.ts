@@ -3,6 +3,7 @@ import { GetDB } from '@/utils/db';
 import { User } from '@/types/user';
 
 export async function POST(req: NextRequest) {
+    //TODO: validate email and password is correct and exist in database 
     const { email, password } = await req.json();
 
     try {

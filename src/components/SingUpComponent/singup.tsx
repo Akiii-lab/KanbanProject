@@ -21,12 +21,14 @@ import { LogoIcon } from "../logo";
 import { useState } from "react";
 import { Loader } from "../Loader/loader";
 import { Eye, EyeClosed } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const SingUpComponent = () => {
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState<string | null>(null);
     const [stateEye, setStateEye] = useState(false);
     const [confirmStateEye, setConfirmStateEye] = useState(false);
+    const router = useRouter();
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -56,6 +58,7 @@ export const SingUpComponent = () => {
             toast.error(data.error || 'Error al registrar el usuario');
         } else {
             toast.success('Registro de usuario exitoso');
+            router.push('/login');
         }
         setLoading(false);
     }
@@ -115,7 +118,7 @@ export const SingUpComponent = () => {
                                                 <Input
                                                     className="main-input"
                                                     placeholder="Enter your password"
-                                                    type={stateEye ? 'text' : 'password'}
+                                                    type={confirmStateEye ? 'text' : 'password'}
                                                     {...field}
                                                 />
                                                 <Button type="button" variant={"ghost"} className="hover:bg-transparent absolute right-3 hover:cursor-pointer   top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setConfirmStateEye(!confirmStateEye)}>

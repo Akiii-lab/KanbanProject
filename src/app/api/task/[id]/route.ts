@@ -40,3 +40,33 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         return new Response(JSON.stringify({ ok: false, error: "Internal Server Error" }), { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id: taskId } = await params;
+    const user = req.cookies.get("user")?.value;
+
+    if (!user) {
+        return new Response(JSON.stringify({ error: "User not authenticated", ok: false }), { status: 401 });
+    }
+
+    try {
+        const db = await GetDB();
+
+        const taskResult = await db.request()
+            .input('taskId', taskId)
+            .query('SELECT * FROM KanbanProject.Tasks WHERE id = @taskId');
+
+        if (taskResult.recordset.length === 0) {
+            return new Response(JSON.stringify({ error: "Task not found", ok: false }), { status: 404 });
+        }
+
+        await db.request()
+            .input('taskId', taskId)
+            .query('DELETE FROM KanbanProject.Tasks WHERE id = @taskId');    
+
+        return new Response(JSON.stringify({ ok: true, message: "Task deleted successfully" }), { status: 200 });
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        return new Response(JSON.stringify({ ok: false, error: "Internal Server Error" }), { status: 500 });
+    }
+}
