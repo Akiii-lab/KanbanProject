@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const user = req.cookies.get("user")?.value;
 
-    if(!user) {
+    if (!user) {
         return new Response(JSON.stringify({ error: "User not authenticated", ok: false }), { status: 401 });
     }
 
@@ -17,10 +17,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         const result = await db.request()
             .input('boardId', id)
             .query('SELECT * FROM KanbanProject.Boards WHERE id = @boardId');
-        
+
         const board: Board | null = result.recordset[0];
 
-        if(!board) {
+        if (!board) {
             return new Response(JSON.stringify({ error: "Board not found", ok: false }), { status: 404 });
         }
 
@@ -28,16 +28,23 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             .input('boardId', id)
             .query('SELECT * FROM KanbanProject.Tasks WHERE board_id = @boardId');
 
-        const tasks : Task[] | null = resultTasks.recordset;
+        const tasks: Task[] | null = resultTasks.recordset;
 
         const resultUserTasks = await db.request()
             .input('boardId', id)
-            .query(`SELECT us.* FROM KanbanProject.Users us
-                    JOIN KanbanProject.Tasks t ON us.id = t.user_id
-                    WHERE t.board_id = @boardId`);
+            .query(`SELECT * FROM KanbanProject.Users us
+                    JOIN KanbanProject.BoardUsers bu ON us.id = bu.user_id
+                    WHERE bu.board_id = @boardId`);
 
-    const userTasks: UserTask[] | null = resultUserTasks.recordset;
+        const userTasks: UserTask[] = [];
 
+        for (const rUser of resultUserTasks.recordset) {
+            userTasks.push({
+                id: rUser.id[0],
+                username: rUser.username,
+                email: rUser.email,
+            });
+        }
         return new Response(JSON.stringify({ ok: true, data: { board, tasks, userTasks } }), { status: 200 });
     } catch (error) {
         console.error("Error fetching board:", error);
