@@ -45,8 +45,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 }
 
-export async function PUT(req: NextRequest,{ params }: { params: { id: string } }){
-
+export async function PUT(req: NextRequest,{ params }: { params: Promise<{ id: string }>}){
     const { id } = await params;
     const user = req.cookies.get("user")?.value;
 
@@ -109,8 +108,8 @@ export async function PUT(req: NextRequest,{ params }: { params: { id: string } 
 
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const user = req.cookies.get("user")?.value;
 
   if (!user) {

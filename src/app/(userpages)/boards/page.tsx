@@ -23,9 +23,9 @@ export default function BoardsPage() {
     const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
     const handleEditClick = (board: Board) => {
-    setSelectedBoard(board);
-    setEditOpen(true);
-};
+        setSelectedBoard(board);
+        setEditOpen(true);
+    };
 
     const fetchBoards = async () => {
         try {
@@ -117,34 +117,35 @@ export default function BoardsPage() {
                                             {board.description}
                                         </div>
                                         {board.user_id === user?.id ? (
-                                        <div>
-                                            <Button
-                                                variant={"dark"}
-                                                onClick={() => handleEditClick(board)}
+                                            <div>
+                                                <Button
+                                                    variant={"dark"}
+                                                    onClick={() => handleEditClick(board)}
                                                 >
-                                                Edit
-                                                <Edit className="w-4 h-4" />
-                                            </Button>
-                                        </div>) : null}
+                                                    Edit
+                                                    <Edit className="w-4 h-4" />
+                                                </Button>
+                                            </div>) : null}
                                     </CardContent>
                                 </Card>
                             ))}
                         </div>
                     )}
                 </CardContent>
-                    <EditBoardModal
-                        board={selectedBoard}
-                        open={editOpen}
-                        onOpenChange={setEditOpen}
-                        onUpdated={fetchBoards}
-                    />
             </Card>
 
+            <EditBoardModal
+                board={selectedBoard}
+                open={editOpen}
+                onOpenChange={setEditOpen}
+                onUpdated={fetchBoards}
+            />
+            
             <BoardModal
                 open={open}
                 onOpenChange={() => setOpen(false)}
             />
         </>
-        
+
     );
 }
