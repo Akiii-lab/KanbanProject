@@ -11,7 +11,6 @@ export async function GET(req:NextRequest) {
 
     const id = JSON.parse(user).id;
     const db = await GetDB();
-    console.log("Fetching boards for user ID:", id);
     const result = await db.request()
         .input('userId', id)
         .query(`

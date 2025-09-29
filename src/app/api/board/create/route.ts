@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
 
     const { description, name, users } = await req.json();
     const user = req.cookies.get("user")?.value;
-    if (!user || !name || !description) {
+    if (!user || !name) {
         return new Response(JSON.stringify({ error: "Missing required fields", ok: false }), { status: 400 });
     }
 
@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     const db = await GetDB();
 
     const allUsers = Array.from(new Set([id, ...(users || [])]));
-
     try {
         const res = await db.request()
             .input('title', name)
