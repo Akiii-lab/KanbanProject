@@ -10,6 +10,8 @@ import { Edit, PlusIcon, RefreshCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EditBoardModal } from "@/components/(usercomponents)/boardModal/EditBoardModal";
+
 
 export default function BoardsPage() {
     const [loading, setLoading] = useState(true);
@@ -17,6 +19,13 @@ export default function BoardsPage() {
     const [open, setOpen] = useState(false);
     const router = useRouter();
     const { user } = useUserStore();
+    const [editOpen, setEditOpen] = useState(false);
+    const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
+
+    const handleEditClick = (board: Board) => {
+        setSelectedBoard(board);
+        setEditOpen(true);
+    };
 
     const fetchBoards = async () => {
         try {
@@ -108,14 +117,15 @@ export default function BoardsPage() {
                                             {board.description}
                                         </div>
                                         {board.user_id === user?.id ? (
-                                        <div>
-                                            <Button
-                                                variant={"dark"}
-                                            >
-                                                Edit
-                                                <Edit className="w-4 h-4" />
-                                            </Button>
-                                        </div>) : null}
+                                            <div>
+                                                <Button
+                                                    variant={"dark"}
+                                                    onClick={() => handleEditClick(board)}
+                                                >
+                                                    Edit
+                                                    <Edit className="w-4 h-4" />
+                                                </Button>
+                                            </div>) : null}
                                     </CardContent>
                                 </Card>
                             ))}
@@ -124,10 +134,18 @@ export default function BoardsPage() {
                 </CardContent>
             </Card>
 
+            <EditBoardModal
+                board={selectedBoard}
+                open={editOpen}
+                onOpenChange={setEditOpen}
+                onUpdated={fetchBoards}
+            />
+            
             <BoardModal
                 open={open}
                 onOpenChange={() => setOpen(false)}
             />
         </>
+
     );
 }
