@@ -10,9 +10,11 @@ import { useRef, useState } from 'react';
 interface CreateTaskModalProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
-    onSubmit: (data: SaveTask) => void;
+    // onSubmit can receive an optional state_id coming from the parent/modal
+    onSubmit: (data: SaveTask & { state_id?: number }) => void;
     users: UserTask[];
     isEdit?: boolean | null;
+    initialStateId?: number | null;
 }
 
 export const CreateTaskModal = ({
@@ -20,7 +22,8 @@ export const CreateTaskModal = ({
     onOpenChange,
     onSubmit,
     users,
-    isEdit
+    isEdit,
+    initialStateId = null
 }: CreateTaskModalProps) => {
     const [files, setFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -115,7 +118,7 @@ export const CreateTaskModal = ({
                         </Button>
                         <Button
                             variant={"midLight"}
-                            onClick={() => onSubmit(form)}
+                            onClick={() => onSubmit({ ...form, state_id: initialStateId ?? undefined })}
                         >
                             Save
                         </Button>
