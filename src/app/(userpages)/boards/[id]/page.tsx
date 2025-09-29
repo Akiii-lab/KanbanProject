@@ -22,6 +22,7 @@ export default function BoardPage({ params }: BoardPageProps) {
     const [Tasks, setTasks] = useState<Task[] | null>(null);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [taskOpen, setTaskOpen] = useState(false);
+    const [createStateId, setCreateStateId] = useState<number | null>(null);
     const [viewTaskOpen, setViewTaskOpen] = useState(false);
     const [teamOpen, setTeamOpen] = useState(false);
     const [users, setUsers] = useState<UserTask[] | null>(null);
@@ -149,7 +150,7 @@ export default function BoardPage({ params }: BoardPageProps) {
         fetchBoardData();
     }, [fetchBoardData]);
 
-    const handleSaveTask = async (data: SaveTask) => {
+    const handleSaveTask = async (data: SaveTask & { state_id?: number }) => {
         if (!data.title || !data.user_id) {
             toast.error("Invalid task data");
             return;
@@ -166,7 +167,9 @@ export default function BoardPage({ params }: BoardPageProps) {
                     title: data.title,
                     content: data.content,
                     user_id: data.user_id,
-                    board_id: parseInt(id)
+                    board_id: parseInt(id),
+                    // Prefer state_id provided by modal, otherwise use createStateId from column, fallback to 1
+                    state_id: (typeof data.state_id === 'number' && !isNaN(data.state_id)) ? data.state_id : (createStateId || 1)
                 }),
             })
 
@@ -181,6 +184,7 @@ export default function BoardPage({ params }: BoardPageProps) {
             toast.error("Error creating task");
         } finally {
             setLoading(false);
+            setCreateStateId(null);
         }
     }
 
@@ -237,6 +241,10 @@ export default function BoardPage({ params }: BoardPageProps) {
                             tasks={Tasks?.filter((task) => task.state_id === 1) || []}
                             count={stats.pendingTasks}
                             onTaskClick={handleTaskClick}
+                            onCreateTask={(stateId) => {
+                                setCreateStateId(stateId);
+                                setTaskOpen(true);
+                            }}
                         />
                         <DroppableColumn
                             id="2"
@@ -245,6 +253,10 @@ export default function BoardPage({ params }: BoardPageProps) {
                             tasks={Tasks?.filter((task) => task.state_id === 2) || []}
                             count={stats.inProgressTasks}
                             onTaskClick={handleTaskClick}
+                            onCreateTask={(stateId) => {
+                                setCreateStateId(stateId);
+                                setTaskOpen(true);
+                            }}
                         />
                         <DroppableColumn
                             id="3"
@@ -253,6 +265,10 @@ export default function BoardPage({ params }: BoardPageProps) {
                             tasks={Tasks?.filter((task) => task.state_id === 3) || []}
                             count={stats.underReviewTasks}
                             onTaskClick={handleTaskClick}
+                            onCreateTask={(stateId) => {
+                                setCreateStateId(stateId);
+                                setTaskOpen(true);
+                            }}
                         />
                         <DroppableColumn
                             id="4"
@@ -261,6 +277,10 @@ export default function BoardPage({ params }: BoardPageProps) {
                             tasks={Tasks?.filter((task) => task.state_id === 4) || []}
                             count={stats.finishedTasks}
                             onTaskClick={handleTaskClick}
+                            onCreateTask={(stateId) => {
+                                setCreateStateId(stateId);
+                                setTaskOpen(true);
+                            }}
                         />
                     </div>
                 </DndContext>
@@ -271,6 +291,7 @@ export default function BoardPage({ params }: BoardPageProps) {
                 onOpenChange={() => setTaskOpen(false)}
                 users={users || []}
                 onSubmit={handleSaveTask}
+                initialStateId={createStateId}
             />
 
             <TeamModal
