@@ -12,9 +12,10 @@ interface DroppableColumnProps {
     tasks: Task[];
     count: number;
     onTaskClick: (task: Task) => void;
+    onCreateTask?: (stateId: number) => void;
 }
 
-export function DroppableColumn({ id, title, color, tasks, count, onTaskClick }: DroppableColumnProps) {
+export function DroppableColumn({ id, title, color, tasks, count, onTaskClick, onCreateTask }: DroppableColumnProps) {
     const { isOver, setNodeRef } = useDroppable({
         id: id,
     });
@@ -42,7 +43,17 @@ export function DroppableColumn({ id, title, color, tasks, count, onTaskClick }:
             <div className="flex flex-row justify-between items-center p-4">
                 <Label className="font-bold text-lg">{title}</Label>
                 <div className="flex flex-row gap-2">
-                    <PlusIcon />
+                    <button
+                        aria-label={`Create task in ${title}`}
+                        onClick={() => {
+                            const stateId = Number.isNaN(parseInt(id, 10)) ? 0 : parseInt(id, 10);
+                            onCreateTask?.(stateId);
+                        }}
+                        className="p-1 rounded hover:bg-white/5 transition"
+                        type="button"
+                    >
+                        <PlusIcon />
+                    </button>
                     <MoreHorizontal />
                 </div>
             </div>
