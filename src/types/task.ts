@@ -1,7 +1,7 @@
 export interface Task {
     id: number;
-    create_date: string;
-    update_date: string;
+    created_at: string;
+    updated_at: string;
     content: string;
     title: string;
     user_id: number;
@@ -24,4 +24,11 @@ export interface SaveTask {
     title: string;
     content: string;
     user_id: number;
+}
+export interface GrapshTask {
+    title: string;
+    content: string;
+    date: string;
+    board: string;
+    state: number;
 }

@@ -50,6 +50,38 @@ export default function BoardsPage() {
         }
     }
 
+    const handleSave = async (projectName: string, projectDescription: string, selectedUsers: string[]) => {
+        try {
+            const res = await fetch('/api/board/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: projectName,
+                    description: projectDescription,
+                    users: selectedUsers
+                })
+            });
+            const data = await res.json();
+            if (!data.ok) {
+                if (data.error) {
+                    toast.error(data.error);
+                }
+                throw new Error('Error creating board');
+            } else {
+                toast.success('Board created successfully');
+                fetchBoards();
+                return true;
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('Error creating board');
+            return false;
+        }
+    }
+
+
     useEffect(() => {
         fetchBoards();
     }, []);
@@ -140,12 +172,12 @@ export default function BoardsPage() {
                 onOpenChange={setEditOpen}
                 onUpdated={fetchBoards}
             />
-            
+
             <BoardModal
                 open={open}
                 onOpenChange={() => setOpen(false)}
+                onSave={handleSave}
             />
         </>
-
     );
 }

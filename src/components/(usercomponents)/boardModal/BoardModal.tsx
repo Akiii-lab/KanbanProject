@@ -10,14 +10,17 @@ import { toast } from "sonner";
 import { Loader } from "@/components/Loader/loader";
 import { useBoardStore } from "@/store/boardStore";
 import { useUserStore } from "@/store/userStore";
+import { on } from "events";
 
 interface BoardModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onSave: (name: string, description: string, users: string[]) => Promise<boolean>;
 }
 export const BoardModal = ({
     open,
-    onOpenChange
+    onOpenChange,
+    onSave
 }: BoardModalProps) => {
     const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
@@ -44,40 +47,24 @@ export const BoardModal = ({
 
     const handleSave = async () => {
 
-        if(!projectName) {
+        if (!projectName) {
             toast.error("Board name is required");
             return;
         }
-        
+
         try {
             setLoading(true);
-            const res = await fetch('/api/board/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: projectName,
-                    description: projectDescription,
-                    users: selectedUsers
-                })
-            });
-            const data = await res.json();
-            if (!data.ok) {
-                if (data.error) {
-                    toast.error(data.error);
-                    return
-                }
-                throw new Error('Error creating board');
-            } else {
-                toast.success('Board created successfully');
+            const success = await onSave(projectName, projectDescription, selectedUsers);
+            if (!success) {
+                throw new Error("Failed to create board");
             }
-        } catch (err) {
-            console.error(err);
-            toast.error('Error creating board');
+        } catch (error) {
+            toast.error('Failed to create board');
         } finally {
             setLoading(false);
             onOpenChange(false);
+            setProjectName("");
+            setProjectDescription("");
             setSelectedUsers([]);
         }
     }

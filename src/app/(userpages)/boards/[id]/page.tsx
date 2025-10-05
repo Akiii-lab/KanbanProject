@@ -144,7 +144,7 @@ export default function BoardPage({ params }: BoardPageProps) {
 
     const handleDeleteTask = async (taskId: number) => {
         if (!taskId) return;
-        try{
+        try {
             setLoading(true);
             const res = await fetch(`/api/task/${taskId}`, {
                 method: 'DELETE',
@@ -169,9 +169,7 @@ export default function BoardPage({ params }: BoardPageProps) {
         } finally {
             setLoading(false);
         }
-        
-        //TODO: create endpoint to delete task
-    }
+}
 
     useEffect(() => {
         fetchBoardData();
