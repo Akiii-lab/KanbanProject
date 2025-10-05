@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { Loader } from "@/components/Loader/loader";
 import { useBoardStore } from "@/store/boardStore";
 import { useUserStore } from "@/store/userStore";
-import { on } from "events";
 
 interface BoardModalProps {
     open: boolean;
@@ -60,6 +59,7 @@ export const BoardModal = ({
             }
         } catch (error) {
             toast.error('Failed to create board');
+            console.error(error);
         } finally {
             setLoading(false);
             onOpenChange(false);

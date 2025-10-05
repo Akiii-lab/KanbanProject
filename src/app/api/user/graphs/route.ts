@@ -1,5 +1,4 @@
 import { GetDB } from "@/utils/db";
-import { stat } from "fs";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {

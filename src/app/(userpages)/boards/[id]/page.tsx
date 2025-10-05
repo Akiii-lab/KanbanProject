@@ -11,7 +11,6 @@ import { DroppableColumn } from "@/components/(usercomponents)/DroppableColumn/D
 import { CreateTaskModal } from "@/components/(usercomponents)/TaskModal/CreateTaskModal";
 import { TeamModal } from "@/components/(usercomponents)/TeamModal/TeamModal";
 import { TaskModal } from "@/components/(usercomponents)/TaskModal/TaskModal";
-import { set } from "zod";
 
 interface BoardPageProps {
     params: Promise<{ id: string }>;
