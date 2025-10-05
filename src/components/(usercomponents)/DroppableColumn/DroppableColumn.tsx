@@ -49,12 +49,17 @@ export function DroppableColumn({ id, title, color, tasks, count, onTaskClick, o
                             const stateId = Number.isNaN(parseInt(id, 10)) ? 0 : parseInt(id, 10);
                             onCreateTask?.(stateId);
                         }}
-                        className="p-1 rounded hover:bg-white/5 transition"
+                        className="p-1 roundedtransition hover:cursor-pointer"
                         type="button"
                     >
                         <PlusIcon />
                     </button>
-                    <MoreHorizontal />
+                    <button 
+                        className='rounded p-1 transition hover:cursor-pointer'
+                        title='More options (coming soon)'
+                        >
+                        <MoreHorizontal />
+                    </button>
                 </div>
             </div>
             <Card 

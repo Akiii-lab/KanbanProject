@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Card } from "./ui/card";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { Label } from "./ui/label";
 import { useGlobalStore } from "@/store/globalStore";
 
@@ -15,8 +15,9 @@ export const Sidebar = () => {
     const pathname = usePathname();
     const [isClient, setIsClient] = useState(false);
     useEffect(() => { setIsClient(true); }, []);
+    const router = useRouter();
     const { setGlobalLoading, setGlobalText } = useGlobalStore();
-    
+
     const handleLogout = async () => {
         setGlobalLoading(true);
         setGlobalText('Logging out...');
@@ -31,8 +32,7 @@ export const Sidebar = () => {
         clearUser();
         toast.success('Cierre de sesión exitoso');
         setGlobalText(null);
-        setGlobalLoading(false);
-        redirect('/');
+        router.push('/');
     };
 
     const isActive = (href: string) => pathname.startsWith(href);
@@ -51,7 +51,7 @@ export const Sidebar = () => {
                                     >
                                         Dashboard
                                     </Link>
-                                    <HomeIcon size={25} onClick={() => {redirect('/dashboard');}} className={`${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : ''} group-hover:text-[color:var(--c-violet)] transition-colors`} />
+                                    <HomeIcon size={25} onClick={() => { redirect('/dashboard'); }} className={`${isActive('/dashboard') ? 'text-[color:var(--c-purple)]' : ''} group-hover:text-[color:var(--c-violet)] transition-colors`} />
                                 </div>
                                 <div className="group flex flex-row gap-2 items-center hover:text-[color:var(--c-purple)] hover:cursor-pointer transition-colors">
                                     <Link
@@ -60,7 +60,7 @@ export const Sidebar = () => {
                                     >
                                         Boards
                                     </Link>
-                                    <FolderKanbanIcon onClick={() => {redirect('/boards');}} size={25} className={`group-hover:text-[color:var(--c-violet)] transition-colors ${isActive('/boards') ? 'text-[color:var(--c-purple)]' : ''}`} />
+                                    <FolderKanbanIcon onClick={() => { redirect('/boards'); }} size={25} className={`group-hover:text-[color:var(--c-violet)] transition-colors ${isActive('/boards') ? 'text-[color:var(--c-purple)]' : ''}`} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 items-center border-t pt-4 w-full">
