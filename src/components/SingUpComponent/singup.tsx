@@ -175,7 +175,7 @@ export const SingUpComponent = () => {
                                 e.currentTarget.style.color = '#fff';
                             }}
                         >
-                            Sing Up
+                            Sign Up
                         </Button>
                         <div className="text-center flex flex-row gap-1">
                             <Label>Do have an account? </Label>

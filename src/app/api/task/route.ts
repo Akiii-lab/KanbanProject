@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
             .input('userId', user_id)
             .input('boardId', board_id)
             .input('stateId', normalizedStateId)
-            .input('createdAt', new Date().toISOString().split('T')[0])
+            .input('createdAt', new Date(Date.now()))
             .query(`
-                INSERT INTO KanbanProject.Tasks (title, content, user_id, board_id, state_id, create_date)
+                INSERT INTO KanbanProject.Tasks (title, content, user_id, board_id, state_id, created_at)
                 VALUES (@title, @content, @userId, @boardId, @stateId, @createdAt)
             `);
 

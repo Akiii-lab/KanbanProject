@@ -11,7 +11,6 @@ import { DroppableColumn } from "@/components/(usercomponents)/DroppableColumn/D
 import { CreateTaskModal } from "@/components/(usercomponents)/TaskModal/CreateTaskModal";
 import { TeamModal } from "@/components/(usercomponents)/TeamModal/TeamModal";
 import { TaskModal } from "@/components/(usercomponents)/TaskModal/TaskModal";
-import { set } from "zod";
 
 interface BoardPageProps {
     params: Promise<{ id: string }>;
@@ -144,7 +143,7 @@ export default function BoardPage({ params }: BoardPageProps) {
 
     const handleDeleteTask = async (taskId: number) => {
         if (!taskId) return;
-        try{
+        try {
             setLoading(true);
             const res = await fetch(`/api/task/${taskId}`, {
                 method: 'DELETE',
@@ -169,9 +168,7 @@ export default function BoardPage({ params }: BoardPageProps) {
         } finally {
             setLoading(false);
         }
-        
-        //TODO: create endpoint to delete task
-    }
+}
 
     useEffect(() => {
         fetchBoardData();
