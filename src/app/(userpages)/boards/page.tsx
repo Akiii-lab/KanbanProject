@@ -118,7 +118,7 @@ export default function BoardsPage() {
                         </Button>
                     </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="h-full overflow-y-auto">
                     {boards.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full">
                             <div className="text-lg ">No boards available</div>
